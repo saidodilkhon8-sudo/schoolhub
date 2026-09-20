@@ -50,17 +50,15 @@ export function AuthPage() {
     setLoading(true);
     try {
       if (mode === 'login') {
-        // Special admin master credentials check or local fallback if Supabase is unconfigured or not registered yet
-        const isAdminMaster =
-          (cleanEmail === 'saidodilkhon2@gmail.com' && password === 'sas2013s') ||
-          (cleanEmail === 'saidodilkhon8@gmail.com' && (password === 'sas2013s' || password === 'admin123'));
+        // Special admin master credentials check: strictly saidodilkhon2@gmail.com with sas2013s
+        const isAdminMaster = cleanEmail === 'saidodilkhon2@gmail.com' && password === 'sas2013s';
 
         try {
           await signInStudent(cleanEmail, password);
           showToast('Добро пожаловать в SchoolHub!', 'success');
         } catch (authErr: any) {
           if (isAdminMaster) {
-            loginAsGuest(cleanEmail);
+            loginAsGuest('saidodilkhon2@gmail.com');
             showToast('Вход выполнен с правами Администратора!', 'success');
             return;
           }

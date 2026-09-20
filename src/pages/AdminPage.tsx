@@ -434,8 +434,7 @@ export function AdminPage({ onNavigateHome }: AdminPageProps) {
                       const isTargetAdmin = Boolean(u.is_admin || u.role === 'admin');
                       const isCurrentUser =
                         u.id === user?.id ||
-                        u.email === 'saidodilkhon2@gmail.com' ||
-                        u.email === 'saidodilkhon8@gmail.com';
+                        u.email === 'saidodilkhon2@gmail.com';
 
                       return (
                         <tr key={u.id} className="hover:bg-zinc-800/30 transition-colors">

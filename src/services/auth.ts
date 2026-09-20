@@ -2,9 +2,13 @@ import { supabase } from '../lib/supabase';
 import { Profile } from '../types';
 
 export async function signUpStudent(email: string, password: string) {
+  const redirectUrl = typeof window !== 'undefined' ? window.location.origin : undefined;
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      emailRedirectTo: redirectUrl,
+    },
   });
   if (error) throw error;
   return data;
@@ -32,7 +36,10 @@ export async function signOutStudent() {
 }
 
 export async function resetPasswordStudent(email: string) {
-  const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+  const redirectUrl = typeof window !== 'undefined' ? window.location.origin : undefined;
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: redirectUrl,
+  });
   if (error) throw error;
   return data;
 }

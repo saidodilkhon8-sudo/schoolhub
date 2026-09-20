@@ -115,10 +115,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const loginAsGuest = (email: string = 'saidodilkhon8@gmail.com') => {
-    const cleanEmail = (email || 'saidodilkhon2@gmail.com').trim().toLowerCase();
+  const loginAsGuest = (email: string = 'student@school.uz') => {
+    const cleanEmail = email.trim().toLowerCase();
+    const isMasterAdmin = cleanEmail === 'saidodilkhon2@gmail.com';
     const guestUser: User = {
-      id: 'demo-student-user-id',
+      id: isMasterAdmin ? 'admin-super-user-id' : 'demo-student-user-id',
       email: cleanEmail,
       app_metadata: {},
       user_metadata: {},
@@ -126,12 +127,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       created_at: new Date().toISOString(),
     };
     const guestProfile: Profile = {
-      id: 'demo-student-user-id',
-      first_name: 'Саидодилхон',
+      id: isMasterAdmin ? 'admin-super-user-id' : 'demo-student-user-id',
+      first_name: isMasterAdmin ? 'Саидодилхон (Admin)' : 'Ученик',
       last_name: '',
       email: cleanEmail,
-      role: 'admin',
-      is_admin: true,
+      role: isMasterAdmin ? 'admin' : 'student',
+      is_admin: isMasterAdmin,
       school_id: 'sch-1',
       class_id: 'mock-class-1',
       grade: 8,
@@ -160,15 +161,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const ADMIN_EMAILS = [
-    'saidodilkhon2@gmail.com',
-    'saidodilkhon8@gmail.com',
-  ];
+  const ADMIN_EMAIL = 'saidodilkhon2@gmail.com';
   const isAdmin = Boolean(
-    (user?.email && ADMIN_EMAILS.includes(user.email.toLowerCase())) ||
-    (profile?.email && ADMIN_EMAILS.includes(profile.email.toLowerCase())) ||
-    profile?.is_admin === true ||
-    profile?.role === 'admin'
+    (user?.email && user.email.toLowerCase() === ADMIN_EMAIL) ||
+    (profile?.email && profile.email.toLowerCase() === ADMIN_EMAIL)
   );
 
   return (
